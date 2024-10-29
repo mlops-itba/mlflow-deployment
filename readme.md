@@ -17,6 +17,8 @@ MLFLOW_TRACKING_URI=http://127.0.0.1:5000
 # Correr server
 ```bash
 mlflow ui --port 5001
+
+mlflow ui --port 5001 --artifacts-destination gs://infoxel-ml-ops/mlflow_repository
 ```
 
 # Servir modelo
@@ -48,7 +50,7 @@ export GOOGLE_APPLICATION_CREDENTIALS_PATH=/code/
 docker run -it --env-file .env  -v $GOOGLE_APPLICATION_CREDENTIALS_PATH:/home/code/ -p 1234:1234 mlflow-model-test /bin/bash 
 
 
-mlflow models serve -m runs:/123813544bb94f3082e421c83ba7def8/model -p 1234 --enable-mlserver
+mlflow models serve -m runs:/123813544bb94f3082e421c83ba7def8/model -p 1234 -h 0.0.0.0 --enable-mlserver --env-manager local
 ```
 
 
