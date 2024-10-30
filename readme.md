@@ -23,7 +23,8 @@ mlflow ui --port 5001 --artifacts-destination gs://infoxel-ml-ops/mlflow_reposit
 
 # Servir modelo
 ```bash
-mlflow models serve -m runs:/123813544bb94f3082e421c83ba7def8/model -p 1234 --enable-mlserver --no-conda
+mlflow models serve -m runs:/ee548ee836bc4bb49df6f1021d7e3c39/model -p 1234 --enable-mlserver --no-conda
+mlflow models serve -m runs:/ee548ee836bc4bb49df6f1021d7e3c39/model -p 1234 --env-manager conda
 ```
 
 
@@ -48,22 +49,26 @@ docker build --tag mlflow-model-test .
 
 export GOOGLE_APPLICATION_CREDENTIALS_PATH=/code/
 docker run -it --env-file .env  -v $GOOGLE_APPLICATION_CREDENTIALS_PATH:/home/code/ -p 1234:1234 mlflow-model-test /bin/bash 
+docker run -it mlflow-model-test /bin/bash 
+
+mlflow models serve -m runs:/40a3c892a14d47e487982af67950c562/model -p 1234 -h 0.0.0.0 --enable-mlserver --env-manager local
 
 
-mlflow models serve -m runs:/123813544bb94f3082e421c83ba7def8/model -p 1234 -h 0.0.0.0 --enable-mlserver --env-manager local
+docker run -it --env-file .env  -v $GOOGLE_APPLICATION_CREDENTIALS_PATH:/home/code/ -p 1234:1234 mlflow-model-test /bin/bash -c 'mlflow models serve -m runs:/40a3c892a14d47e487982af67950c562/model -p 1234 -h 0.0.0.0 --enable-mlserver --env-manager local'
 ```
 
 
 # Build docker with mlflow
 ```bash
 export MLFLOW_TRACKING_URI=http://localhost:5001
-mlflow models build-docker -m runs:/bd66b2d80c1a47e89a6be7d17104a8a7/model -n <your_dockerhub_user_name>/mlflow-wine-classifier --enable-mlserver
+mlflow models build-docker -m runs:/<run_id>/<artifact_path> -n <image_name> --enable-mlserver
 
 mlflow models build-docker -m runs:/bd66b2d80c1a47e89a6be7d17104a8a7/model -n mlflow-wine-classifier --enable-mlserver
 ```
 
 ```bash
- docker run mlflow-wine-classifier -p 8080:8080
+export MLFLOW_TRACKING_URI=http://localhost:5001
+docker run -p 8080:8080 mlflow-wine-classifier 
 ```
 
  # Deploy to kubernets
@@ -76,3 +81,10 @@ https://mlflow.org/docs/latest/deployment/index.html
 https://mlflow.org/docs/latest/deployment/deploy-model-to-kubernetes/index.html
 
 https://mlflow.org/docs/latest/deployment/deploy-model-to-kubernetes/tutorial.html
+
+
+# Push de docker
+
+```bash
+docker push mlflow-wine-classifier
+```
