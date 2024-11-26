@@ -1,0 +1,17 @@
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "mlflow-wine-classifier"
+  namespace: "mlflow-kserve-test"
+spec:
+  predictor:
+    containers:
+      - name: "mlflow-wine-classifier"
+        image: "mlflow-model-test"
+        params: "-c 'mlflow models serve -m runs:/40a3c892a14d47e487982af67950c562/model -p 1234 -h 0.0.0.0 --enable-mlserver --env-manager local"
+        ports:
+          - containerPort: 8080
+            protocol: TCP
+        env:
+          - name: PROTOCOL
+            value: "v2"

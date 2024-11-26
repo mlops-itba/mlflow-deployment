@@ -8,7 +8,7 @@ input_data = {"inputs": [
 ]}
 input_data
 # %%
-port = 1234
+port = 8080
 predictons = requests.post(
     f'http://127.0.0.1:{port}/invocations',
     json=input_data
