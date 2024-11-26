@@ -60,10 +60,12 @@ docker run -it --env-file .env  -v $GOOGLE_APPLICATION_CREDENTIALS_PATH:/home/co
 
 # Build docker with mlflow
 ```bash
-export MLFLOW_TRACKING_URI=http://localhost:5001
+export MLFLOW_TRACKING_URI=http://localhost:5002
 mlflow models build-docker -m runs:/<run_id>/<artifact_path> -n <image_name> --enable-mlserver
 
-mlflow models build-docker -m runs:/5b987155f66343e495e0aa169e2c0b4d/model -n mlflow_wine_classifier --enable-mlserver
+mlflow models build-docker -m runs:/860c1e550f7c4094b60ee4fc08669128/model -n mlflow-wine-classifier --enable-mlserver
+
+mlflow models build-docker -m runs:/860c1e550f7c4094b60ee4fc08669128/model -n jganzabal/mlflow-wine-classifier --enable-mlserver
 ```
 
 ```bash

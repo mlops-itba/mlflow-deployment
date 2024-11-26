@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wine-model-2
+  labels:
+    app: wine-model-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wine-model-2
+  template:
+    metadata:
+      labels:
+        app: wine-model-2
+    spec:
+      containers:
+      - name: wine-model-2
+        image: jganzabal/mlflow-wine-classifier:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wine-model-2
+spec:
+  selector:
+    app: wine-model-2
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
